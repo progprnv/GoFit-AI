@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoFit AI - AI Fitness Care</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+        }
+
+        .input-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        input, select {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1rem;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: #00d4ff;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #00b4d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.5);
+        }
+
+        .result-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+            display: none;
+        }
+
+        .result-box h2 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .result-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .result-box li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            input, select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GoFit AI</h1>
+        <p>Your AI-powered fitness companion</p>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <input type="number" id="age" placeholder="Enter Age" required>
+            <input type="number" id="weight" placeholder="Enter Weight (kg)" required>
+            <input type="number" id="height" placeholder="Enter Height (cm)" required>
+            <input type="text" id="city" placeholder="Enter City" required>
+            <input type="text" id="district" placeholder="Enter District" required>
+            <input type="text" id="state" placeholder="Enter State" required>
+            <input type="text" id="country" placeholder="Enter Country" required>
+            <button onclick="submitData()">Get Fitness Plan</button>
+        </div>
+
+        <!-- Results Section -->
+        <div class="result-box" id="location-results">
+            <h2>Nearby Fitness Spots</h2>
+            <div id="turfs"></div>
+            <div id="gyms"></div>
+        </div>
+
+        <div class="result-box" id="weather-results">
+            <h2>Current Weather & Food Recommendations</h2>
+            <div id="weather"></div>
+            <div id="food"></div>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your actual API keys
+        const geminiApiKey = "YOUR_GEMINI_API_KEY";
+        const weatherApiKey = "YOUR_OPENWEATHERMAP_API_KEY";
+        const grokApiKey = "YOUR_GROK_API_KEY";
+
+        async function submitData() {
+            const age = document.getElementById("age").value;
+            const weight = document.getElementById("weight").value;
+            const height = document.getElementById("height").value;
+            const city = document.getElementById("city").value;
+            const district = document.getElementById("district").value;
+            const state = document.getElementById("state").value;
+            const country = document.getElementById("country").value;
+
+            if (!age || !weight || !height || !city || !district || !state || !country) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            // Phase 1: Gemini API for Turfs and Gyms
+            const locationQuery = `Location is in ${city}, ${district}, ${state}, ${country}. Suggest me top 5 turfs and top 5 gym spots in my area with Google Map links, contact numbers, and ratings for each.`;
+            await fetchGeminiData(locationQuery);
+
+            // Phase 2: OpenWeatherMap API for Weather
+            await fetchWeatherData(city, country);
+
+            // Show result boxes
+            document.getElementById("location-results").style.display = "block";
+            document.getElementById("weather-results").style.display = "block";
+        }
+
+        // Gemini API Call (Phase 1)
+        async function fetchGeminiData(query) {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
+            const requestBody = {
+                contents: [{ parts: [{ text: query }] }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestBody)
+                });
+                const data = await response.json();
+                const result = data.candidates[0].content.parts[0].text;
+
+                // Dummy parsing (replace with actual parsing logic based on Gemini response)
+                document.getElementById("turfs").innerHTML = `<h3>Top 5 Turfs</h3><ul>${parseList(result, "turf")}</ul>`;
+                document.getElementById("gyms").innerHTML = `<h3>Top 5 Gyms</h3><ul>${parseList(result, "gym")}</ul>`;
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                document.getElementById("turfs").innerText = "Error fetching turf data.";
+                document.getElementById("gyms").innerText = "Error fetching gym data.";
+            }
+        }
+
+        // OpenWeatherMap API Call (Phase 2 - Weather)
+        async function fetchWeatherData(city, country) {
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${weatherApiKey}&units=metric`;
+            try {
+                const response = await fetch(weatherUrl);
+                const data = await response.json();
+                const weatherInfo = `Current Weather: ${data.weather[0].description}, Temp: ${data.main.temp}°C, Humidity: ${data.main.humidity}%`;
+                document.getElementById("weather").innerText = weatherInfo;
+
+                // Calculate BMI
+                const weight = parseFloat(document.getElementById("weight").value);
+                const height = parseFloat(document.getElementById("height").value) / 100; // Convert cm to m
+                const bmi = (weight / (height * height)).toFixed(2);
+
+                // Phase 2: Grok API for Food Recommendations
+                const grokQuery = `Given the weather: ${weatherInfo}, age: ${document.getElementById("age").value}, BMI: ${bmi}, suggest the top 5 food items to stay healthy with reasons.`;
+                await fetchGrokData(grokQuery);
+            } catch (error) {
+                console.error("Weather API Error:", error);
+                document.getElementById("weather").innerText = "Error fetching weather data.";
+            }
+        }
+
+        // Grok API Call (Phase 2 - Food Recommendations)
+        async function fetchGrokData(query) {
+            const grokUrl = "https://api.x.ai/v1/chat/completions";
+            try {
+                const response = await fetch(grokUrl, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${grokApiKey}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: "grok-beta",
+                        messages: [{ role: "user", content: query }]
+                    })
+                });
+                const data = await response.json();
+                const foodResult = data.choices[0].message.content;
+                document.getElementById("food").innerHTML = `<h3>Top 5 Food Recommendations</h3><ul>${parseList(foodResult, "food")}</ul>`;
+            } catch (error) {
+                console.error("Grok API Error:", error);
+                document.getElementById("food").innerText = "Error fetching food recommendations.";
+            }
+        }
+
+        // Dummy parsing function (replace with actual parsing logic)
+        function parseList(text, type) {
+            // This is a placeholder; adjust based on actual API response format
+            return text.split("\n")
+                .filter(line => line.includes(type))
+                .map(line => `<li>${line}</li>`)
+                .slice(0, 5)
+                .join("");
+        }
+    </script>
+</body>
+</html>
