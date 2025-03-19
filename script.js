@@ -1,3 +1,36 @@
+// Initialize AOS (Animate On Scroll)
+AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 100
+});
+
+// Mobile Menu Toggle
+const mobileMenuBtn = document.querySelector('.mobile-menu');
+const navLinks = document.querySelector('.nav-links');
+
+mobileMenuBtn.addEventListener('click', () => {
+    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+});
+
+// Smooth Scroll for Navigation Links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Close mobile menu if open
+            if (window.innerWidth <= 768) {
+                navLinks.style.display = 'none';
+            }
+        }
+    });
+});
+
 // Replace these with your actual API keys (use a backend in production for security)
 const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY';
 const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY';
@@ -37,7 +70,7 @@ document.getElementById('user-form').addEventListener('submit', async (e) => {
         const foodResponse = await callGrokAPI(foodQuery);
         displayFoodRecommendations(foodResponse);
 
-        // Scroll to results
+        // Scroll to results with animation
         resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (error) {
         console.error('Error:', error);
@@ -62,11 +95,11 @@ function updateLoadingStates() {
     });
 }
 
-// Show error message
+// Show error message with animation
 function showError(message) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = `
-        <div class="error-message">
+        <div class="error-message" data-aos="fade-up">
             <i class="fas fa-exclamation-circle"></i>
             <p>${message}</p>
         </div>
@@ -159,7 +192,7 @@ function displayFitnessSpots(text) {
 function displayWeather(data) {
     const weatherElement = document.getElementById('weather-data');
     weatherElement.innerHTML = `
-        <div class="weather-info">
+        <div class="weather-info" data-aos="fade-up">
             <i class="fas fa-cloud-sun"></i>
             <p><strong>Weather:</strong> ${data.description}</p>
             <p><strong>Temperature:</strong> ${data.temp}°C</p>
@@ -198,3 +231,17 @@ function displayFoodRecommendations(text) {
         avoidElement.style.opacity = '1';
     }, 100);
 }
+
+// Add scroll reveal animation
+window.addEventListener('scroll', () => {
+    const elements = document.querySelectorAll('.content-box, .feature-card, .form-group');
+    elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementBottom = element.getBoundingClientRect().bottom;
+        
+        if (elementTop < window.innerHeight && elementBottom > 0) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    });
+});
