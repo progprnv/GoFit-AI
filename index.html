@@ -5,63 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoFit AI - AI Fitness Care</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>GoFit AI</h1>
-        <p>Your AI-Powered Fitness Companion</p>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <h1>GoFit AI</h1>
+            </div>
+            <p>Your AI-Powered Fitness Companion</p>
+        </div>
     </header>
     <main>
         <form id="user-form">
             <div class="form-container">
                 <div class="form-group">
-                    <label for="age">Age</label>
+                    <label for="age"><i class="fas fa-user"></i> Age</label>
                     <input type="number" id="age" name="age" placeholder="e.g., 25" required>
                 </div>
                 <div class="form-group">
-                    <label for="weight">Weight (kg)</label>
+                    <label for="weight"><i class="fas fa-weight"></i> Weight (kg)</label>
                     <input type="number" id="weight" name="weight" placeholder="e.g., 70" required>
                 </div>
                 <div class="form-group">
-                    <label for="height">Height (cm)</label>
+                    <label for="height"><i class="fas fa-ruler-vertical"></i> Height (cm)</label>
                     <input type="number" id="height" name="height" placeholder="e.g., 170" required>
                 </div>
                 <div class="form-group">
-                    <label for="city">City</label>
+                    <label for="city"><i class="fas fa-city"></i> City</label>
                     <input type="text" id="city" name="city" placeholder="e.g., Thrissur" required>
                 </div>
                 <div class="form-group">
-                    <label for="district">District</label>
+                    <label for="district"><i class="fas fa-map-marker-alt"></i> District</label>
                     <input type="text" id="district" name="district" placeholder="e.g., Thrissur" required>
                 </div>
                 <div class="form-group">
-                    <label for="state">State</label>
+                    <label for="state"><i class="fas fa-flag"></i> State</label>
                     <input type="text" id="state" name="state" value="Kerala">
                 </div>
                 <div class="form-group">
-                    <label for="country">Country</label>
+                    <label for="country"><i class="fas fa-globe"></i> Country</label>
                     <input type="text" id="country" name="country" value="India">
                 </div>
             </div>
-            <button type="submit">Get Your Fitness Plan</button>
+            <button type="submit">
+                <i class="fas fa-magic"></i> Get Your Fitness Plan
+            </button>
         </form>
         <div id="results" class="results-container" style="display: none;">
             <section id="fitness-spots">
-                <h2>Nearby Fitness Spots</h2>
+                <h2><i class="fas fa-map-marked-alt"></i> Nearby Fitness Spots</h2>
                 <div id="turfs" class="content-box"></div>
                 <div id="gyms" class="content-box"></div>
             </section>
             <section id="weather">
-                <h2>Current Weather</h2>
+                <h2><i class="fas fa-cloud-sun"></i> Current Weather</h2>
                 <div id="weather-data" class="content-box"></div>
             </section>
             <section id="food-recommendations">
-                <h2>Food Recommendations</h2>
+                <h2><i class="fas fa-utensils"></i> Food Recommendations</h2>
                 <div id="recommended-foods" class="content-box"></div>
                 <div id="avoid-foods" class="content-box"></div>
             </section>
         </div>
     </main>
+    <footer>
+        <p>© 2024 GoFit AI. All rights reserved.</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
