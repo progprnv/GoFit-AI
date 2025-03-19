@@ -3,77 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoFit AI - AI Fitness Care</title>
+    <title>FitLife AI | Your Smart Fitness Companion</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/96/000000/dumbbell.png">
 </head>
 <body>
-    <header>
-        <div class="header-content">
+    <div class="background-animation"></div>
+    <nav class="navbar">
+        <div class="nav-content">
             <div class="logo">
-                <i class="fas fa-dumbbell"></i>
-                <h1>GoFit AI</h1>
+                <img src="https://img.icons8.com/fluency/96/000000/dumbbell.png" alt="FitLife AI Logo" class="logo-img">
+                <div class="logo-text">
+                    <h1>FitLife AI</h1>
+                    <span class="tagline">Smart Fitness, Better Life</span>
+                </div>
             </div>
-            <p>Your AI-Powered Fitness Companion</p>
+            <div class="nav-links">
+                <a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="#features" class="nav-link"><i class="fas fa-star"></i> Features</a>
+                <a href="#form" class="nav-link"><i class="fas fa-user-plus"></i> Get Started</a>
+                <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-section">
+        <div class="header-content">
+            <div class="hero-text" data-aos="fade-right">
+                <h1>Transform Your Life with AI-Powered Fitness</h1>
+                <p>Get personalized fitness plans, nutrition advice, and real-time guidance from our advanced AI system.</p>
+                <div class="hero-buttons">
+                    <a href="#form" class="cta-button primary">
+                        <i class="fas fa-rocket"></i> Start Your Journey
+                    </a>
+                    <a href="#features" class="cta-button secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image" data-aos="fade-left">
+                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Fitness">
+            </div>
         </div>
     </header>
-    <main>
-        <form id="user-form">
-            <div class="form-container">
-                <div class="form-group">
-                    <label for="age"><i class="fas fa-user"></i> Age</label>
-                    <input type="number" id="age" name="age" placeholder="e.g., 25" required>
+
+    <section id="features" class="features-section">
+        <h2 data-aos="fade-up">Why Choose FitLife AI?</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
                 </div>
-                <div class="form-group">
-                    <label for="weight"><i class="fas fa-weight"></i> Weight (kg)</label>
-                    <input type="number" id="weight" name="weight" placeholder="e.g., 70" required>
-                </div>
-                <div class="form-group">
-                    <label for="height"><i class="fas fa-ruler-vertical"></i> Height (cm)</label>
-                    <input type="number" id="height" name="height" placeholder="e.g., 170" required>
-                </div>
-                <div class="form-group">
-                    <label for="city"><i class="fas fa-city"></i> City</label>
-                    <input type="text" id="city" name="city" placeholder="e.g., Thrissur" required>
-                </div>
-                <div class="form-group">
-                    <label for="district"><i class="fas fa-map-marker-alt"></i> District</label>
-                    <input type="text" id="district" name="district" placeholder="e.g., Thrissur" required>
-                </div>
-                <div class="form-group">
-                    <label for="state"><i class="fas fa-flag"></i> State</label>
-                    <input type="text" id="state" name="state" value="Kerala">
-                </div>
-                <div class="form-group">
-                    <label for="country"><i class="fas fa-globe"></i> Country</label>
-                    <input type="text" id="country" name="country" value="India">
-                </div>
+                <h3>AI-Powered</h3>
+                <p>Advanced algorithms analyze your data for personalized recommendations</p>
             </div>
-            <button type="submit">
-                <i class="fas fa-magic"></i> Get Your Fitness Plan
-            </button>
-        </form>
-        <div id="results" class="results-container" style="display: none;">
-            <section id="fitness-spots">
-                <h2><i class="fas fa-map-marked-alt"></i> Nearby Fitness Spots</h2>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <h3>Location Based</h3>
+                <p>Find the best fitness spots near you</p>
+            </div>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <h3>Weather Aware</h3>
+                <p>Get weather-optimized workout plans</p>
+            </div>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Smart Nutrition</h3>
+                <p>Personalized diet recommendations</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="form" class="form-section">
+        <div class="form-container" data-aos="fade-up">
+            <h2>Get Your Personalized Fitness Plan</h2>
+            <form id="user-form">
+                <div class="form-grid">
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="100">
+                        <label for="age"><i class="fas fa-user"></i> Age</label>
+                        <input type="number" id="age" name="age" placeholder="e.g., 25" required>
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="200">
+                        <label for="weight"><i class="fas fa-weight"></i> Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" placeholder="e.g., 70" required>
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="300">
+                        <label for="height"><i class="fas fa-ruler-vertical"></i> Height (cm)</label>
+                        <input type="number" id="height" name="height" placeholder="e.g., 170" required>
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="400">
+                        <label for="city"><i class="fas fa-city"></i> City</label>
+                        <input type="text" id="city" name="city" placeholder="e.g., Thrissur" required>
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="500">
+                        <label for="district"><i class="fas fa-map-marker-alt"></i> District</label>
+                        <input type="text" id="district" name="district" placeholder="e.g., Thrissur" required>
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="600">
+                        <label for="state"><i class="fas fa-flag"></i> State</label>
+                        <input type="text" id="state" name="state" value="Kerala">
+                    </div>
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="700">
+                        <label for="country"><i class="fas fa-globe"></i> Country</label>
+                        <input type="text" id="country" name="country" value="India">
+                    </div>
+                </div>
+                <button type="submit" class="submit-button" data-aos="fade-up" data-aos-delay="800">
+                    <i class="fas fa-magic"></i> Get Your Fitness Plan
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <div id="results" class="results-container" style="display: none;">
+        <section id="fitness-spots" data-aos="fade-up">
+            <h2><i class="fas fa-map-marked-alt"></i> Nearby Fitness Spots</h2>
+            <div class="results-grid">
                 <div id="turfs" class="content-box"></div>
                 <div id="gyms" class="content-box"></div>
-            </section>
-            <section id="weather">
-                <h2><i class="fas fa-cloud-sun"></i> Current Weather</h2>
-                <div id="weather-data" class="content-box"></div>
-            </section>
-            <section id="food-recommendations">
-                <h2><i class="fas fa-utensils"></i> Food Recommendations</h2>
+            </div>
+        </section>
+        <section id="weather" data-aos="fade-up" data-aos-delay="100">
+            <h2><i class="fas fa-cloud-sun"></i> Current Weather</h2>
+            <div id="weather-data" class="content-box"></div>
+        </section>
+        <section id="food-recommendations" data-aos="fade-up" data-aos-delay="200">
+            <h2><i class="fas fa-utensils"></i> Food Recommendations</h2>
+            <div class="results-grid">
                 <div id="recommended-foods" class="content-box"></div>
                 <div id="avoid-foods" class="content-box"></div>
-            </section>
+            </div>
+        </section>
+    </div>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-content" data-aos="fade-up">
+            <h2>Get in Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>contact@fitlifeai.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+91 1234567890</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Kerala, India</p>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
+
     <footer>
-        <p>© 2024 GoFit AI. All rights reserved.</p>
+        <div class="footer-content">
+            <p>© 2024 FitLife AI. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#form">Get Started</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
     </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
