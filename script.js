@@ -156,7 +156,7 @@ async function callGeminiAPI(query) {
 
 async function getWeather(city, country) {
     try {
-        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${WEATHER_API_KEY}&units=metric`;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&lang=en&units=metric&appid=${WEATHER_API_KEY}`;
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('Weather API error');
         const data = await response.json();
