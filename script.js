@@ -60,7 +60,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Replace these with your actual API keys (use a backend in production for security)
-const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY';
+const GEMINI_API_KEY = 'AIzaSyDpujbyrAZ1I_hniPtJNZwnMClGSjfLj-A';
 const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY';
 const GROK_API_KEY = 'YOUR_GROK_API_KEY';
 
@@ -137,7 +137,7 @@ function showError(message) {
 // API Calls with error handling
 async function callGeminiAPI(query) {
     try {
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         const requestBody = {
             contents: [{ parts: [{ text: query }] }]
         };
