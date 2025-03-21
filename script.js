@@ -189,14 +189,36 @@ async function callGrokAPI(query) {
     }
 }
 
-// Display Functions with animations
 function displayFitnessSpots(text) {
-    const turfsMatch = text.match(/top 5 turfs([\s\S]*?)(?=top 5 gym spots|$)/i);
-    const gymsMatch = text.match(/top 5 gym spots([\s\S]*)/i);
-    
-    const turfsText = turfsMatch ? turfsMatch[1].trim().split('\n').map(line => `<p>${line}</p>`).join('') : 'No turfs found.';
-    const gymsText = gymsMatch ? gymsMatch[1].trim().split('\n').map(line => `<p>${line}</p>`).join('') : 'No gyms found.';
-    
+    console.log('Raw fitness response:', text); // Debug: Check this in F12 Console
+
+    // Try to match "top 5 turfs" and "top 5 gym spots" with flexible separators
+    const turfsMatch = text.match(/(top 5 turfs|5 turfs|suggested turfs|turfs in my area)([\s\S]*?)(?=top 5 gym spots|5 gym spots|suggested gyms|$)/i);
+    const gymsMatch = text.match(/(top 5 gym spots|5 gym spots|suggested gyms|gyms in my area)([\s\S]*)/i);
+
+    let turfsText, gymsText;
+
+    if (turfsMatch && gymsMatch) {
+        // If both sections are found
+        turfsText = turfsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
+        gymsText = gymsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
+    } else {
+        // Fallback: Split by numbered items (e.g., "1.", "2.", etc.) and divide into two groups
+        const lines = text.split('\n').filter(line => line.trim());
+        const numberedItems = lines.filter(line => /^\d+\.\s/.test(line));
+        if (numberedItems.length >= 5) {
+            turfsText = numberedItems.slice(0, 5).map(line => `<p>${line.trim()}</p>`).join('');
+            gymsText = numberedItems.slice(5, 10).map(line => `<p>${line.trim()}</p>`).join('');
+        } else {
+            turfsText = 'No turfs found.';
+            gymsText = 'No gyms found.';
+        }
+    }
+
+    // Ensure some content if matches fail
+    turfsText = turfsText || 'No turfs found.';
+    gymsText = gymsText || 'No gyms found.';
+
     const turfsElement = document.getElementById('turfs');
     const gymsElement = document.getElementById('gyms');
     
