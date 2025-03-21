@@ -171,23 +171,20 @@ async function getWeather(city, country) {
 
 async function callGrokAPI(query) {
     try {
-        const apiUrl = 'https://api.x.ai/v1/chat/completions';
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         const requestBody = {
-            model: 'grok-beta',
-            messages: [{ role: 'user', content: query }]
+            contents: [{ parts: [{ text: query }] }]
         };
         const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${GROK_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
         });
-        if (!response.ok) throw new Error('Grok API error');
+        if (!response.ok) throw new Error('Gemini API error');
         const data = await response.json();
-        return data.choices[0].message.content;
+        return data.candidates[0].content.parts[0].text;
     } catch (error) {
+        console.error('Gemini API fetch failed:', error);
         throw new Error('Failed to fetch food recommendations');
     }
 }
