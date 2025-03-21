@@ -61,8 +61,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Replace these with your actual API keys (use a backend in production for security)
 const GEMINI_API_KEY = 'AIzaSyDpujbyrAZ1I_hniPtJNZwnMClGSjfLj-A';
-const WEATHER_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY';
-const GROK_API_KEY = 'YOUR_GROK_API_KEY';
+const WEATHER_API_KEY = 'ef044fe4724ec6a5f73404f603dcdd93';
+const GROK_API_KEY = 'xai-IXOKMQ6mw5tiwSx0srZkDdEw4PagP0zrfIG1Z8FxM49SdXtfFhQCZhjvdMjGh7rMkDiAQx1UcQULDtgY';
 
 // Form submission handler
 document.getElementById('user-form').addEventListener('submit', async (e) => {
