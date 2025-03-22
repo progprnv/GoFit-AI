@@ -203,9 +203,7 @@ Check out the [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 ---
 
 ## 📸 Screenshots  
-| Gym Finder | Weather Display | Food Recommendations |  
-|------------|-----------------|----------------------|  
-| ![Gym Finder](https://via.placeholder.com/300x200.png?text=Gym+Finder) | ![Weather](https://via.placeholder.com/300x200.png?text=Weather) | ![Food](https://via.placeholder.com/300x200.png?text=Food+Recs) |  
+  
 
 ---
 
