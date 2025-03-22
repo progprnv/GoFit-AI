@@ -192,11 +192,18 @@ async function callGrokAPI(query) {
 function displayFitnessSpots(text) {
     console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
-    // Normalize text by removing excessive whitespace
-    const normalizedText = text.replace(/\s*\n\s*/g, '\n').trim();
+    // Normalize text by removing excessive whitespace and markdown headers
+    const normalizedText = text
+        .replace(/##\s*/g, '') // Remove "##" headers
+        .replace(/\s*\n\s*/g, '\n') // Normalize whitespace around newlines
+        .trim();
 
-    // Split the text into turfs and gyms sections using "Top 5 gyms" as delimiter
-    const parts = normalizedText.split(/top 5 gyms/i);
+    // Remove any preamble before "Top 5 Turfs" (e.g., "in Kochi, Ernakulam...")
+    const startIndex = normalizedText.toLowerCase().indexOf('top 5 turfs');
+    const cleanText = startIndex !== -1 ? normalizedText.substring(startIndex) : normalizedText;
+
+    // Split the text into turfs and gyms sections using "Top 5 Gyms" as delimiter
+    const parts = cleanText.split(/top 5 gyms/i);
     const turfsText = parts[0].match(/top 5 turfs([\s\S]*)/i);
     const gymsText = parts[1] ? parts[1].trim() : '';
 
