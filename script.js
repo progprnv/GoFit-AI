@@ -235,7 +235,6 @@ function displayFitnessSpots(text) {
         gymsElement.style.opacity = '1';
     }, 100);
 }
-
 function displayWeather(data) {
     const weatherElement = document.getElementById('weather-data');
     weatherElement.innerHTML = `
