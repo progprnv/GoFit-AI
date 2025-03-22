@@ -64,62 +64,69 @@ const GEMINI_API_KEY = 'AIzaSyDpujbyrAZ1I_hniPtJNZwnMClGSjfLj-A';
 const WEATHER_API_KEY = 'ef044fe4724ec6a5f73404f603dcdd93';
 const GROK_API_KEY = 'xai-IXOKMQ6mw5tiwSx0srZkDdEw4PagP0zrfIG1Z8FxM49SdXtfFhQCZhjvdMjGh7rMkDiAQx1UcQULDtgY';
 
-// Form submission handler
-document.getElementById('user-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData.entries());
-    const resultsDiv = document.getElementById('results');
-    const submitButton = e.target.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.innerHTML;
+// Wait for DOM to load before attaching form handler
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('user-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        const resultsDiv = document.getElementById('results');
+        const submitButton = e.target.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
 
-    // Show loading states
-    resultsDiv.style.display = 'block';
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<span class="loading"></span> Generating Your Plan...';
+        // Show loading states
+        resultsDiv.style.display = 'block';
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<span class="loading"></span> Generating Your Plan...';
 
-    // Update loading states for each section
-    updateLoadingStates();
+        // Update loading states for each section
+        updateLoadingStates();
 
-    try {
-        // Phase 1: Fitness Spots via Gemini API
-        const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links, address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms`;
-        const fitnessResponse = await callGeminiAPI(fitnessQuery);
-        displayFitnessSpots(fitnessResponse);
+        try {
+            // Phase 1: Fitness Spots via Gemini API
+            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links, address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms`;
+            const fitnessResponse = await callGeminiAPI(fitnessQuery);
+            displayFitnessSpots(fitnessResponse);
 
-        // Phase 2: Current Weather via OpenWeatherMap API
-        const weatherData = await getWeather(data.city, data.country);
-        displayWeather(weatherData);
+            // Phase 2: Current Weather via OpenWeatherMap API
+            const weatherData = await getWeather(data.city, data.country);
+            displayWeather(weatherData);
 
-        // Phase 3: Food Recommendations via Gemini API (corrected from Grok)
-        const heightM = parseFloat(data.height) / 100;
-        const bmi = (parseFloat(data.weight) / (heightM * heightM)).toFixed(2);
-        const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons.`;
-        const foodResponse = await callGrokAPI(foodQuery); // Note: This uses Gemini API despite being named callGrokAPI
-        displayFoodRecommendations(foodResponse);
+            // Phase 3: Food Recommendations via Gemini API (corrected from Grok)
+            const heightM = parseFloat(data.height) / 100;
+            const bmi = (parseFloat(data.weight) / (heightM * heightM)).toFixed(2);
+            const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons.`;
+            const foodResponse = await callGrokAPI(foodQuery); // Note: This uses Gemini API despite being named callGrokAPI
+            displayFoodRecommendations(foodResponse);
 
-        // Scroll to results with animation
-        resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (error) {
-        console.error('Error:', error);
-        showError('An error occurred while generating your fitness plan. Please try again.');
-    } finally {
-        // Reset button state
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalButtonText;
-    }
+            // Scroll to results with animation
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (error) {
+            console.error('Error:', error);
+            showError('An error occurred while generating your fitness plan. Please try again.');
+        } finally {
+            // Reset button state
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+        }
+    });
 });
 
 // Update loading states for all sections
 function updateLoadingStates() {
     const sections = ['fitness-spots-content', 'weather-data', 'recommended-foods', 'avoid-foods'];
     sections.forEach(section => {
-        document.getElementById(section).innerHTML = `
-            <div class="loading-container">
-                <span class="loading"></span>
-                <p>Loading ${section.replace('-', ' ')}...</p>
-            </div>
-        `;
+        const element = document.getElementById(section);
+        if (element) { // Check if element exists
+            element.innerHTML = `
+                <div class="loading-container">
+                    <span class="loading"></span>
+                    <p>Loading ${section.replace('-', ' ')}...</p>
+                </div>
+            `;
+        } else {
+            console.warn(`Element with ID '${section}' not found in DOM`);
+        }
     });
 }
 
