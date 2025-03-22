@@ -12,7 +12,7 @@
   </a>
   <h3>
     <b>
-     GoFit
+     GoFit v 0.0.1
     </b>
   </h3>
   <b>
