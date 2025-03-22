@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Phase 3: Food Recommendations via Gemini API (corrected from Grok)
             const heightM = parseFloat(data.height) / 100;
             const bmi = (parseFloat(data.weight) / (heightM * heightM)).toFixed(2);
-            const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons.`;
+            const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons. i dont * in output. add emojis too`;
             const foodResponse = await callGrokAPI(foodQuery); // Note: This uses Gemini API despite being named callGrokAPI
             displayFoodRecommendations(foodResponse);
 
