@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Phase 1: Fitness Spots via Gemini API
-            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with address in plain text and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms. make some space between the these two different titles and highlight these two titles. i dont need '*' in output. no need starting sentence. just send me the answer`;
+            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with address in plain text and also contact number and also ratings for each in bulleted points for each spots, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms and subtitles total of 10 for spot details. make some space between the these two different titles and highlight these two titles. i dont need '*' in output. no need starting sentence. just send me the answer`;
             const fitnessResponse = await callGeminiAPI(fitnessQuery);
             displayFitnessSpots(fitnessResponse);
 
