@@ -195,50 +195,20 @@ function displayFitnessSpots(text) {
     // Normalize text by removing excessive whitespace
     const normalizedText = text.replace(/\s*\n\s*/g, '\n').trim();
 
-    // Split the text into turfs and gyms sections using "Top 5 Gyms" (or variants) as delimiter
-    const parts = normalizedText.split(/(top 5 gyms|gym spots|💪\s*top 5 gyms)/i);
-    const turfsText = parts[0].match(/(top 5 turfs|turfs in|suggested turfs|⚽️?\s*top 5 turfs)([\s\S]*)/i);
-    const gymsText = parts[1] && parts[2] ? parts[2].trim() : '';
+    // Split the text into turfs and gyms sections using "Top 5 gyms" as delimiter
+    const parts = normalizedText.split(/top 5 gyms/i);
+    const turfsText = parts[0].match(/top 5 turfs([\s\S]*)/i);
+    const gymsText = parts[1] ? parts[1].trim() : '';
 
-    // Function to parse entries and format with details
-    const formatEntries = (sectionText) => {
+    // Function to format the raw text as HTML
+    const formatText = (sectionText) => {
         if (!sectionText) return 'No entries found.';
-
-        // Match entries starting with "* " followed by optional emoji and name
-        const entryRegex = /\*\s+[⚽🥅💪🏋️‍♀️]?\s*(.+?)(?:\n|$)([\s\S]*?)(?=\*\s+[⚽🥅💪🏋️‍♀️]?|$)/g;
-        const entries = [];
-        let match;
-        while ((match = entryRegex.exec(sectionText)) !== null) {
-            entries.push(match);
-        }
-
-        return entries.map(entry => {
-            const name = entry[1].trim();
-            const details = entry[2];
-            const addressMatch = details.match(/(Address|Location):?\s*(.+)/i);
-            const mapsMatch = details.match(/(Google Maps|Maps Link):?\s*\[(.*?)\]/i);
-            const contactMatch = details.match(/Contact( Number)?:?\s*(.+)/i);
-            const ratingMatch = details.match(/Rating:?\s*(.+)/i);
-
-            const address = addressMatch ? addressMatch[2].trim() : 'Not provided';
-            const mapsLink = mapsMatch ? mapsMatch[2].trim() : '#';
-            const contact = contactMatch ? contactMatch[2].trim() : 'Not provided';
-            const rating = ratingMatch ? ratingMatch[1].trim() : 'Not provided';
-
-            return `
-                <div class="fitness-entry">
-                    <p><strong>${name}</strong></p>
-                    <p>Address: ${address}</p>
-                    <p><a href="${mapsLink}" target="_blank">Google Maps</a></p>
-                    <p>Contact: ${contact}</p>
-                    <p>Rating: ${rating}</p>
-                </div>
-            `;
-        }).join('');
+        // Replace newlines with <br> and wrap in a paragraph
+        return `<p>${sectionText.replace(/\n/g, '<br>')}</p>`;
     };
 
-    const turfsList = turfsText && turfsText[2] ? formatEntries(turfsText[2].trim()) : 'No turfs found.';
-    const gymsList = gymsText ? formatEntries(gymsText) : 'No gyms found.';
+    const turfsList = turfsText ? formatText(turfsText[1].trim()) : 'No turfs found.';
+    const gymsList = gymsText ? formatText(gymsText) : 'No gyms found.';
 
     const turfsElement = document.getElementById('turfs');
     const gymsElement = document.getElementById('gyms');
