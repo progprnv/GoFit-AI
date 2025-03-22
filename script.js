@@ -193,30 +193,30 @@ function displayFitnessSpots(text) {
     console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
     // Split into turfs and gyms sections
-    const turfsMatch = text.match(/Top 5 Turfs([\s\S]*?)(?=Top 5 Gyms|$)/i);
-    const gymsMatch = text.match(/Top 5 Gyms([\s\S]*)/i);
+    const turfsMatch = text.match(/Top 5 Turfs in Kochi:[\s\S]*?(?=Top 5 Gym Spots in Kochi|$)/i);
+    const gymsMatch = text.match(/Top 5 Gym Spots in Kochi:[\s\S]*/i);
 
     let turfsText = 'No turfs found.';
     let gymsText = 'No gyms found.';
 
     // Function to parse each entry and format with details
     const formatEntries = (sectionText) => {
-        // Match numbered items with their details
-        const entryRegex = /(\d+\.\s+\*\*.+?\*\*[\s\S]*?)(?=\d+\.\s+\*\*|$)/g;
+        // Match each bullet point entry starting with "*   Name:"
+        const entryRegex = /\*\s+(.+?):[\s\S]*?(?=\*\s+|$)/g;
         const entries = sectionText.match(entryRegex) || [];
         
         return entries.map(entry => {
-            const nameMatch = entry.match(/\d+\.\s+\*\*(.+?)\*\*/);
+            const nameMatch = entry.match(/\*\s+(.+?):/);
+            const ratingMatch = entry.match(/Rating:\s*(.+)/);
+            const addressMatch = entry.match(/Address:\s*(.+)/);
             const mapsMatch = entry.match(/Google Maps Link:\s*\[(.*?)\]/);
-            const addressMatch = entry.match(/\*\*\s*Address:\s*(.+)/);
-            const contactMatch = entry.match(/\*\*\s*Contact Number:\s*(.+)/);
-            const ratingMatch = entry.match(/\*\*\s*Rating:\s*(.+)/);
+            const contactMatch = entry.match(/Contact Number:\s*(.+)/);
 
-            const name = nameMatch ? nameMatch[1] : 'Unknown';
-            const mapsLink = mapsMatch ? mapsMatch[1] : '#';
-            const address = addressMatch ? addressMatch[1] : 'Not provided';
-            const contact = contactMatch ? contactMatch[1] : 'Not provided';
-            const rating = ratingMatch ? ratingMatch[1] : 'Not provided';
+            const name = nameMatch ? nameMatch[1].trim() : 'Unknown';
+            const rating = ratingMatch ? ratingMatch[1].trim() : 'Not provided';
+            const address = addressMatch ? addressMatch[1].trim() : 'Not provided';
+            const mapsLink = mapsMatch ? mapsMatch[1].trim() : '#';
+            const contact = contactMatch ? contactMatch[1].trim() : 'Not provided';
 
             return `
                 <div class="fitness-entry">
@@ -232,12 +232,12 @@ function displayFitnessSpots(text) {
 
     // Process turfs section
     if (turfsMatch) {
-        turfsText = formatEntries(turfsMatch[1].trim());
+        turfsText = formatEntries(turfsMatch[0].trim());
     }
 
     // Process gyms section
     if (gymsMatch) {
-        gymsText = formatEntries(gymsMatch[1].trim());
+        gymsText = formatEntries(gymsMatch[0].trim());
     }
 
     const turfsElement = document.getElementById('turfs');
