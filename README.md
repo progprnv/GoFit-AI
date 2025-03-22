@@ -28,7 +28,7 @@
   <p>
     <sub>
       Built with ❤︎ by
-      <a href="https://github.com/hoppscotch/hoppscotch/graphs/contributors">
+      <a href="https://github.com/progprnv/gofit-ai/graphs/contributors)">
         contributors
       </a>
     </sub>
