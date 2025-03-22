@@ -62,7 +62,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Replace these with your actual API keys (use a backend in production for security)
 const GEMINI_API_KEY = 'AIzaSyDpujbyrAZ1I_hniPtJNZwnMClGSjfLj-A';
 const WEATHER_API_KEY = 'ef044fe4724ec6a5f73404f603dcdd93';
-const GROK_API_KEY = 'xai-IXOKMQ6mw5tiwSx0srZkDdEw4PagP0zrfIG1Z8FxM49SdXtfFhQCZhjvdMjGh7rMkDiAQx1UcQULDtgY';
+const GROK_API_KEY = 'API KEY';
 
 // Wait for DOM to load before attaching form handler
 document.addEventListener('DOMContentLoaded', () => {
@@ -92,11 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const weatherData = await getWeather(data.city, data.country);
             displayWeather(weatherData);
 
-            // Phase 3: Food Recommendations via Gemini API (corrected from Grok)
+            // Phase 3: Food Recommendations via Gemini API
             const heightM = parseFloat(data.height) / 100;
             const bmi = (parseFloat(data.weight) / (heightM * heightM)).toFixed(2);
             const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons.`;
-            const foodResponse = await callGrokAPI(foodQuery); // Note: This uses Gemini API despite being named callGrokAPI
+            const foodResponse = await callGemini2API(foodQuery);
             displayFoodRecommendations(foodResponse);
 
             // Scroll to results with animation
@@ -176,7 +176,7 @@ async function getWeather(city, country) {
     }
 }
 
-async function callGrokAPI(query) {
+async function callGemini2API(query) {
     try {
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
         const requestBody = {
