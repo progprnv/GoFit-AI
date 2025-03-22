@@ -190,58 +190,34 @@ async function callGrokAPI(query) {
 }
 
 function displayFitnessSpots(text) {
-    console.log('Raw fitness response:', text); // Debug: Check full response
+    console.log('Raw fitness response:', text); // Debug: Check this in F12 Console
 
-    // Split the text into lines and filter out empty ones
-    const lines = text.split('\n').filter(line => line.trim());
-    
-    // Extract numbered items (e.g., "1. **Knockout Arena Turf Ground**")
-    const numberedItems = lines.filter(line => /^\d+\.\s*\*\*/.test(line));
-    
-    // Split into turfs (first 5) and gyms (next 5)
-    const turfs = numberedItems.slice(0, 5);
-    const gyms = numberedItems.slice(5, 10);
+    // Try to match "top 5 turfs" and "top 5 gym spots" with flexible separators
+    const turfsMatch = text.match(/(top 5 turfs|5 turfs|suggested turfs|turfs in my area)([\s\S]*?)(?=top 5 gym spots|5 gym spots|suggested gyms|$)/i);
+    const gymsMatch = text.match(/(top 5 gym spots|5 gym spots|suggested gyms|gyms in my area)([\s\S]*)/i);
 
-    // Function to format each item with details
-    const formatItem = (itemLines) => {
-        const nameMatch = itemLines.match(/\d+\.\s*\*\*(.+?)\*\*/);
-        const name = nameMatch ? nameMatch[1] : 'Unknown';
-        
-        const details = [];
-        let i = lines.indexOf(itemLines) + 1;
-        while (i < lines.length && !/^\d+\.\s*\*\*/.test(lines[i])) {
-            if (lines[i].trim()) details.push(lines[i].trim());
-            i++;
+    let turfsText, gymsText;
+
+    if (turfsMatch && gymsMatch) {
+        // If both sections are found
+        turfsText = turfsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
+        gymsText = gymsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
+    } else {
+        // Fallback: Split by numbered items (e.g., "1.", "2.", etc.) and divide into two groups
+        const lines = text.split('\n').filter(line => line.trim());
+        const numberedItems = lines.filter(line => /^\d+\.\s/.test(line));
+        if (numberedItems.length >= 5) {
+            turfsText = numberedItems.slice(0, 5).map(line => `<p>${line.trim()}</p>`).join('');
+            gymsText = numberedItems.slice(5, 10).map(line => `<p>${line.trim()}</p>`).join('');
+        } else {
+            turfsText = 'No turfs found.';
+            gymsText = 'No gyms found.';
         }
+    }
 
-        let description = '', mapLink = '', address = '', contact = '', rating = '';
-        details.forEach(detail => {
-            if (detail.startsWith('*   **Description:**')) description = detail.replace('*   **Description:**', '').trim();
-            if (detail.startsWith('*   **Google Maps Link:**')) mapLink = detail.match(/\[(.*?)\]\((.*?)\)/)?.[2] || '';
-            if (detail.startsWith('*   **Address:**')) address = detail.replace('*   **Address:**', '').trim();
-            if (detail.startsWith('*   **Contact Number:**')) contact = detail.replace('*   **Contact Number:**', '').trim();
-            if (detail.startsWith('*   **Rating:**')) rating = detail.replace('*   **Rating:**', '').trim();
-        });
-
-        return `
-            <div class="fitness-item">
-                <h4>${name}</h4>
-                <p><strong>Description:</strong> ${description || 'N/A'}</p>
-                <p><strong>Address:</strong> ${address || 'N/A'}</p>
-                <p><strong>Contact:</strong> ${contact || 'N/A'}</p>
-                <p><strong>Rating:</strong> ${rating || 'N/A'}</p>
-                <p><a href="${mapLink}" target="_blank" class="map-link"><i class="fas fa-map-marker-alt"></i> View on Google Maps</a></p>
-            </div>
-        `;
-    };
-
-    // Generate HTML for turfs and gyms
-    const turfsText = turfs.length > 0 
-        ? turfs.map(item => formatItem(item)).join('') 
-        : '<p>No turfs found.</p>';
-    const gymsText = gyms.length > 0 
-        ? gyms.map(item => formatItem(item)).join('') 
-        : '<p>No gyms found.</p>';
+    // Ensure some content if matches fail
+    turfsText = turfsText || 'No turfs found.';
+    gymsText = gymsText || 'No gyms found.';
 
     const turfsElement = document.getElementById('turfs');
     const gymsElement = document.getElementById('gyms');
