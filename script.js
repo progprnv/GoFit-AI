@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Phase 1: Fitness Spots via Gemini API
-            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links, address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms`;
+            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links, address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms (which must be highlighed by any emoji and bold text). no need of starting sentence. Just send me the answer only `;
             const fitnessResponse = await callGeminiAPI(fitnessQuery);
             displayFitnessSpots(fitnessResponse);
 
