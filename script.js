@@ -91,11 +91,11 @@ document.getElementById('user-form').addEventListener('submit', async (e) => {
         const weatherData = await getWeather(data.city, data.country);
         displayWeather(weatherData);
 
-        // Phase 3: Food Recommendations via Grok API
+        // Phase 3: Food Recommendations via Gemini API (corrected from Grok)
         const heightM = parseFloat(data.height) / 100;
         const bmi = (parseFloat(data.weight) / (heightM * heightM)).toFixed(2);
         const foodQuery = `Given the current weather is ${weatherData.description}, temperature is ${weatherData.temp}°C, and the user's age is ${data.age}, height is ${data.height}cm, weight is ${data.weight}kg, BMI is ${bmi}, please suggest the top 5 recommended food items and top 5 foods to avoid or limit for this weather and health condition, along with reasons.`;
-        const foodResponse = await callGrokAPI(foodQuery);
+        const foodResponse = await callGrokAPI(foodQuery); // Note: This uses Gemini API despite being named callGrokAPI
         displayFoodRecommendations(foodResponse);
 
         // Scroll to results with animation
@@ -195,63 +195,17 @@ function displayFitnessSpots(text) {
     // Normalize text by removing excessive whitespace
     const normalizedText = text.replace(/\s*\n\s*/g, '\n').trim();
 
-    // Flexible header detection
-    const turfHeaderPatterns = [
-        /top 5 turfs/i,
-        /turfs in/i,
-        /suggested turfs/i,
-        /⚽️?\s*top 5 turfs/i
-    ];
-    const gymHeaderPatterns = [
-        /top 5 gyms/i,
-        /gym spots/i,
-        /suggested gyms/i,
-        /💪?\s*top 5 gyms/i
-    ];
-
-    let turfsSection = '';
-    let gymsSection = '';
-
-    // Find section boundaries
-    const lines = normalizedText.split('\n');
-    let turfStart = -1;
-    let gymStart = -1;
-
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].toLowerCase();
-        if (turfStart === -1 && turfHeaderPatterns.some(pattern => pattern.test(line))) {
-            turfStart = i;
-        }
-        if (gymStart === -1 && gymHeaderPatterns.some(pattern => pattern.test(line))) {
-            gymStart = i;
-            break;
-        }
-    }
-
-    if (turfStart !== -1 && gymStart !== -1 && turfStart < gymStart) {
-        turfsSection = lines.slice(turfStart, gymStart).join('\n').trim();
-        gymsSection = lines.slice(gymStart).join('\n').trim();
-    } else if (turfStart !== -1) {
-        turfsSection = lines.slice(turfStart).join('\n').trim();
-    } else if (gymStart !== -1) {
-        gymsSection = lines.slice(gymStart).join('\n').trim();
-    }
-
-    // Fallback: If no clear split, look for bullet points and divide
-    if (!turfsSection && !gymsSection) {
-        const bulletItems = lines.filter(line => /^\*\s+/.test(line));
-        if (bulletItems.length >= 5) {
-            turfsSection = bulletItems.slice(0, 5).join('\n');
-            gymsSection = bulletItems.slice(5, 10).join('\n');
-        }
-    }
+    // Split the text into turfs and gyms sections using "Top 5 Gyms" (or variants) as delimiter
+    const parts = normalizedText.split(/(top 5 gyms|gym spots|💪\s*top 5 gyms)/i);
+    const turfsText = parts[0].match(/(top 5 turfs|turfs in|suggested turfs|⚽️?\s*top 5 turfs)([\s\S]*)/i);
+    const gymsText = parts[1] && parts[2] ? parts[2].trim() : '';
 
     // Function to parse entries and format with details
     const formatEntries = (sectionText) => {
         if (!sectionText) return 'No entries found.';
-        
-        // Match entries starting with "*   " followed by optional emoji and name
-        const entryRegex = /\*\s+[⚽🥅💪🏋️‍♀️]?\s*(.+?)(\n|$)([\s\S]*?)(?=\*\s+[⚽🥅💪🏋️‍♀️]?|$)/g;
+
+        // Match entries starting with "* " followed by optional emoji and name
+        const entryRegex = /\*\s+[⚽🥅💪🏋️‍♀️]?\s*(.+?)(?:\n|$)([\s\S]*?)(?=\*\s+[⚽🥅💪🏋️‍♀️]?|$)/g;
         const entries = [];
         let match;
         while ((match = entryRegex.exec(sectionText)) !== null) {
@@ -260,7 +214,7 @@ function displayFitnessSpots(text) {
 
         return entries.map(entry => {
             const name = entry[1].trim();
-            const details = entry[3];
+            const details = entry[2];
             const addressMatch = details.match(/(Address|Location):?\s*(.+)/i);
             const mapsMatch = details.match(/(Google Maps|Maps Link):?\s*\[(.*?)\]/i);
             const contactMatch = details.match(/Contact( Number)?:?\s*(.+)/i);
@@ -283,14 +237,14 @@ function displayFitnessSpots(text) {
         }).join('');
     };
 
-    const turfsText = formatEntries(turfsSection);
-    const gymsText = formatEntries(gymsSection);
+    const turfsList = turfsText && turfsText[2] ? formatEntries(turfsText[2].trim()) : 'No turfs found.';
+    const gymsList = gymsText ? formatEntries(gymsText) : 'No gyms found.';
 
     const turfsElement = document.getElementById('turfs');
     const gymsElement = document.getElementById('gyms');
     
-    turfsElement.innerHTML = `<h3><i class="fas fa-futbol"></i> Top 5 Turfs</h3>${turfsText}`;
-    gymsElement.innerHTML = `<h3><i class="fas fa-dumbbell"></i> Top 5 Gyms</h3>${gymsText}`;
+    turfsElement.innerHTML = `<h3><i class="fas fa-futbol"></i> Top 5 Turfs</h3>${turfsList}`;
+    gymsElement.innerHTML = `<h3><i class="fas fa-dumbbell"></i> Top 5 Gyms</h3>${gymsList}`;
     
     // Add fade-in animation
     turfsElement.style.opacity = '0';
@@ -302,6 +256,7 @@ function displayFitnessSpots(text) {
         gymsElement.style.opacity = '1';
     }, 100);
 }
+
 function displayWeather(data) {
     const weatherElement = document.getElementById('weather-data');
     weatherElement.innerHTML = `
