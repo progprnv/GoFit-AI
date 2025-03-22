@@ -193,36 +193,37 @@ function displayFitnessSpots(text) {
     console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
     // Split into turfs and gyms sections
-    const turfsMatch = text.match(/Top 5 Turfs in Kochi:[\s\S]*?(?=Top 5 Gym Spots in Kochi|$)/i);
-    const gymsMatch = text.match(/Top 5 Gym Spots in Kochi:[\s\S]*/i);
+    const turfsMatch = text.match(/Top 5 Turfs in Kochi, Ernakulam:[\s\S]*?(?=Top 5 Gyms in Kochi, Ernakulam|$)/i);
+    const gymsMatch = text.match(/Top 5 Gyms in Kochi, Ernakulam:[\s\S]*/i);
 
     let turfsText = 'No turfs found.';
     let gymsText = 'No gyms found.';
 
     // Function to parse each entry and format with details
     const formatEntries = (sectionText) => {
-        // Match each bullet point entry starting with "*   Name:"
-        const entryRegex = /\*\s+(.+?):[\s\S]*?(?=\*\s+|$)/g;
-        const entries = sectionText.match(entryRegex) || [];
+        // Match each bullet point entry starting with "*   ⚽/💪 Name"
+        const entryRegex = /\*\s+[⚽💪]\s+(.+?)(\n|$)([\s\S]*?)(?=\*\s+[⚽💪]|$)/g;
+        const entries = [];
+        let match;
+        while ((match = entryRegex.exec(sectionText)) !== null) {
+            entries.push(match);
+        }
         
         return entries.map(entry => {
-            const nameMatch = entry.match(/\*\s+(.+?):/);
-            const ratingMatch = entry.match(/Rating:\s*(.+)/);
-            const addressMatch = entry.match(/Address:\s*(.+)/);
-            const mapsMatch = entry.match(/Google Maps Link:\s*\[(.*?)\]/);
-            const contactMatch = entry.match(/Contact Number:\s*(.+)/);
+            const name = entry[1].trim();
+            const details = entry[3]; // Sub-bullets section
+            const mapsMatch = details.match(/Google Maps Link:\s*\[(.*?)\]/);
+            const contactMatch = details.match(/Contact Number:\s*(.+)/);
+            const ratingMatch = details.match(/Rating:\s*(.+)/);
 
-            const name = nameMatch ? nameMatch[1].trim() : 'Unknown';
-            const rating = ratingMatch ? ratingMatch[1].trim() : 'Not provided';
-            const address = addressMatch ? addressMatch[1].trim() : 'Not provided';
             const mapsLink = mapsMatch ? mapsMatch[1].trim() : '#';
             const contact = contactMatch ? contactMatch[1].trim() : 'Not provided';
+            const rating = ratingMatch ? ratingMatch[1].trim() : 'Not provided';
 
             return `
                 <div class="fitness-entry">
                     <p><strong>${name}</strong></p>
                     <p><a href="${mapsLink}" target="_blank">Google Maps</a></p>
-                    <p>Address: ${address}</p>
                     <p>Contact: ${contact}</p>
                     <p>Rating: ${rating}</p>
                 </div>
