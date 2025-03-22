@@ -19,8 +19,8 @@
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github)](CODE_OF_CONDUCT.md) [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/gofit-ai/actions)  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
-[![Issues](https://img.shields.io/github/issues/your-username/gofit-ai)](https://github.com/your-username/gofit-ai/issues)  
-[![Stars](https://img.shields.io/github/stars/your-username/gofit-ai)](https://github.com/your-username/gofit-ai/stargazers)
+[![Issues](https://img.shields.io/github/issues/progprnv/gofit-ai)](https://github.com/your-username/gofit-ai/issues)  
+[![Stars](https://img.shields.io/github/stars/progprnv/gofit-ai)](https://github.com/your-username/gofit-ai/stargazers)
 
 
   </p>
