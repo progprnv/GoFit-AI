@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Phase 1: Fitness Spots via Gemini API
-            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links, address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms`;
+            const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with address and also contact number and also ratings for each in bulleted, add emojis too. Just give me the answer only with two titles Top 5 turfs and top 5 gyms. make some space between the these two different titles. just send me the answer. i dont '*' and bold texts. `;
             const fitnessResponse = await callGeminiAPI(fitnessQuery);
             displayFitnessSpots(fitnessResponse);
 
@@ -200,18 +200,12 @@ function displayFitnessSpots(text) {
     console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
     // Normalize text by removing excessive whitespace and markdown headers
-    let normalizedText = text
+    const normalizedText = text
         .replace(/##\s*/g, '') // Remove "##" headers
         .replace(/\s*\n\s*/g, '\n') // Normalize whitespace around newlines
         .trim();
 
-    // Convert Markdown links [text](url) to HTML <a> tags
-    normalizedText = normalizedText.replace(
-        /\[(.*?)\]\((https?:\/\/[^\s)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-    );
-
-    // Display the full text with clickable links
+    // Display the full text without splitting
     const fitnessSpotsElement = document.getElementById('fitness-spots-content');
     fitnessSpotsElement.innerHTML = `<p>${normalizedText.replace(/\n/g, '<br>')}</p>`;
     
