@@ -145,39 +145,7 @@ async function fetchWeather() {
    ~~~
    "Current weather is 28°C, sunny. User is 25 years old, 170cm tall, 70kg, BMI 24.2. Suggest top 5 food items to stay healthy in this weather with reasons."
    ~~~  
-3. Displays recommendations with reasons in a neat list.  
-
----
-
-## 🚧 Installation  
-
-1. **Clone the Repository**:  
-   ~~~bash
-   git clone https://github.com/your-username/gofit-ai.git
-   cd gofit-ai
-   ~~~
-
-2. **Set Up API Keys**:  
-   - Get your [Gemini API key](https://developers.google.com/gemini) and replace `YOUR_API_KEY` in the code.  
-   - Get your [OpenWeatherMap API key](https://openweathermap.org/api) and update the weather API call.  
-
-3. **Run Locally**:  
-   Open `index.html` in a browser or use a local server:  
-   ~~~bash
-   npx live-server
-   ~~~
-
----
-
-## 🌍 Contributing  
-We welcome contributions! Here’s how you can help:  
-1. Fork the repo.  
-2. Create a new branch (`git checkout -b feature/your-idea`).  
-3. Commit your changes (`git commit -m "Add cool feature"`).  
-4. Push to your branch (`git push origin feature/your-idea`).  
-5. Open a Pull Request!  
-
-Check out the [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+3. Displays recommendations with reasons in a neat list.
 
 ---
 
