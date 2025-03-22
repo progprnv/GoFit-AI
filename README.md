@@ -2,7 +2,7 @@
  <div align="center">
   <a href="https://">
     <img
-      src="[https://avatars.githubusercontent.com/u/56705483](https://github.com/user-attachments/assets/07144fba-c9d3-4088-be1e-4b5edab5b19f)"
+      src="https://github.com/user-attachments/assets/07144fba-c9d3-4088-be1e-4b5edab5b19f"
       alt="gofit"
       height="64"
     />
