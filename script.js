@@ -83,7 +83,7 @@ document.getElementById('user-form').addEventListener('submit', async (e) => {
 
     try {
         // Phase 1: Fitness Spots via Gemini API
-        const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links and also contact number and also ratings for each`;
+        const fitnessQuery = `location is in ${data.city},${data.district},${data.state},${data.country} suggest me top 5 turfs and top 5 gym spots in my area with google map links and also contact number and also ratings for each in bulleted, no need to make the text bolder i mean no need of * formatting in response, add emojis too`;
         const fitnessResponse = await callGeminiAPI(fitnessQuery);
         displayFitnessSpots(fitnessResponse);
 
