@@ -327,6 +327,12 @@ header {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
+#fitness-spots-content p {
+    line-height: 1.5;
+    margin: 10px 0;
+    padding-left: 20px; /* Indent for readability */
+}
+
 /* Contact Section */
 .contact-section {
     padding: 6rem 2rem;
