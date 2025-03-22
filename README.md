@@ -13,7 +13,7 @@
     </b>
   </h3>
   <b>
-    Open Source API Development Ecosystem
+    Open Sourced AI Fitness Care 
   </b>
   <p>
 
