@@ -190,34 +190,55 @@ async function callGrokAPI(query) {
 }
 
 function displayFitnessSpots(text) {
-    console.log('Raw fitness response:', text); // Debug: Check this in F12 Console
+    console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
-    // Try to match "top 5 turfs" and "top 5 gym spots" with flexible separators
-    const turfsMatch = text.match(/(top 5 turfs|5 turfs|suggested turfs|turfs in my area)([\s\S]*?)(?=top 5 gym spots|5 gym spots|suggested gyms|$)/i);
-    const gymsMatch = text.match(/(top 5 gym spots|5 gym spots|suggested gyms|gyms in my area)([\s\S]*)/i);
+    // Split into turfs and gyms sections
+    const turfsMatch = text.match(/Top 5 Turfs([\s\S]*?)(?=Top 5 Gyms|$)/i);
+    const gymsMatch = text.match(/Top 5 Gyms([\s\S]*)/i);
 
-    let turfsText, gymsText;
+    let turfsText = 'No turfs found.';
+    let gymsText = 'No gyms found.';
 
-    if (turfsMatch && gymsMatch) {
-        // If both sections are found
-        turfsText = turfsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
-        gymsText = gymsMatch[2].trim().split('\n').map(line => `<p>${line.trim()}</p>`).join('');
-    } else {
-        // Fallback: Split by numbered items (e.g., "1.", "2.", etc.) and divide into two groups
-        const lines = text.split('\n').filter(line => line.trim());
-        const numberedItems = lines.filter(line => /^\d+\.\s/.test(line));
-        if (numberedItems.length >= 5) {
-            turfsText = numberedItems.slice(0, 5).map(line => `<p>${line.trim()}</p>`).join('');
-            gymsText = numberedItems.slice(5, 10).map(line => `<p>${line.trim()}</p>`).join('');
-        } else {
-            turfsText = 'No turfs found.';
-            gymsText = 'No gyms found.';
-        }
+    // Function to parse each entry and format with details
+    const formatEntries = (sectionText) => {
+        // Match numbered items with their details
+        const entryRegex = /(\d+\.\s+\*\*.+?\*\*[\s\S]*?)(?=\d+\.\s+\*\*|$)/g;
+        const entries = sectionText.match(entryRegex) || [];
+        
+        return entries.map(entry => {
+            const nameMatch = entry.match(/\d+\.\s+\*\*(.+?)\*\*/);
+            const mapsMatch = entry.match(/Google Maps Link:\s*\[(.*?)\]/);
+            const addressMatch = entry.match(/\*\*\s*Address:\s*(.+)/);
+            const contactMatch = entry.match(/\*\*\s*Contact Number:\s*(.+)/);
+            const ratingMatch = entry.match(/\*\*\s*Rating:\s*(.+)/);
+
+            const name = nameMatch ? nameMatch[1] : 'Unknown';
+            const mapsLink = mapsMatch ? mapsMatch[1] : '#';
+            const address = addressMatch ? addressMatch[1] : 'Not provided';
+            const contact = contactMatch ? contactMatch[1] : 'Not provided';
+            const rating = ratingMatch ? ratingMatch[1] : 'Not provided';
+
+            return `
+                <div class="fitness-entry">
+                    <p><strong>${name}</strong></p>
+                    <p><a href="${mapsLink}" target="_blank">Google Maps</a></p>
+                    <p>Address: ${address}</p>
+                    <p>Contact: ${contact}</p>
+                    <p>Rating: ${rating}</p>
+                </div>
+            `;
+        }).join('');
+    };
+
+    // Process turfs section
+    if (turfsMatch) {
+        turfsText = formatEntries(turfsMatch[1].trim());
     }
 
-    // Ensure some content if matches fail
-    turfsText = turfsText || 'No turfs found.';
-    gymsText = gymsText || 'No gyms found.';
+    // Process gyms section
+    if (gymsMatch) {
+        gymsText = formatEntries(gymsMatch[1].trim());
+    }
 
     const turfsElement = document.getElementById('turfs');
     const gymsElement = document.getElementById('gyms');
