@@ -1,9 +1,9 @@
 
  <div align="center">
-  <a href="https://hoppscotch.io">
+  <a href="https://">
     <img
       src="https://avatars.githubusercontent.com/u/56705483"
-      alt="Hoppscotch"
+      alt="gofit"
       height="64"
     />
   </a>
