@@ -12,7 +12,7 @@
   </a>
   <h3>
     <b>
-      Hoppscotch
+     GoFit
     </b>
   </h3>
   <b>
