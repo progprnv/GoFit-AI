@@ -112,7 +112,7 @@ document.getElementById('user-form').addEventListener('submit', async (e) => {
 
 // Update loading states for all sections
 function updateLoadingStates() {
-    const sections = ['turfs', 'gyms', 'weather-data', 'recommended-foods', 'avoid-foods'];
+    const sections = ['fitness-spots-content', 'weather-data', 'recommended-foods', 'avoid-foods'];
     sections.forEach(section => {
         document.getElementById(section).innerHTML = `
             <div class="loading-container">
@@ -198,39 +198,15 @@ function displayFitnessSpots(text) {
         .replace(/\s*\n\s*/g, '\n') // Normalize whitespace around newlines
         .trim();
 
-    // Remove any preamble before "Top 5 Turfs" (e.g., "in Kochi, Ernakulam...")
-    const startIndex = normalizedText.toLowerCase().indexOf('top 5 turfs');
-    const cleanText = startIndex !== -1 ? normalizedText.substring(startIndex) : normalizedText;
-
-    // Split the text into turfs and gyms sections using "Top 5 Gyms" as delimiter
-    const parts = cleanText.split(/top 5 gyms/i);
-    const turfsText = parts[0].match(/top 5 turfs([\s\S]*)/i);
-    const gymsText = parts[1] ? parts[1].trim() : '';
-
-    // Function to format the raw text as HTML
-    const formatText = (sectionText) => {
-        if (!sectionText) return 'No entries found.';
-        // Replace newlines with <br> and wrap in a paragraph
-        return `<p>${sectionText.replace(/\n/g, '<br>')}</p>`;
-    };
-
-    const turfsList = turfsText ? formatText(turfsText[1].trim()) : 'No turfs found.';
-    const gymsList = gymsText ? formatText(gymsText) : 'No gyms found.';
-
-    const turfsElement = document.getElementById('turfs');
-    const gymsElement = document.getElementById('gyms');
-    
-    turfsElement.innerHTML = `<h3><i class="fas fa-futbol"></i> Top 5 Turfs</h3>${turfsList}`;
-    gymsElement.innerHTML = `<h3><i class="fas fa-dumbbell"></i> Top 5 Gyms</h3>${gymsList}`;
+    // Display the full text without splitting
+    const fitnessSpotsElement = document.getElementById('fitness-spots-content');
+    fitnessSpotsElement.innerHTML = `<p>${normalizedText.replace(/\n/g, '<br>')}</p>`;
     
     // Add fade-in animation
-    turfsElement.style.opacity = '0';
-    gymsElement.style.opacity = '0';
+    fitnessSpotsElement.style.opacity = '0';
     setTimeout(() => {
-        turfsElement.style.transition = 'opacity 0.5s ease';
-        gymsElement.style.transition = 'opacity 0.5s ease';
-        turfsElement.style.opacity = '1';
-        gymsElement.style.opacity = '1';
+        fitnessSpotsElement.style.transition = 'opacity 0.5s ease';
+        fitnessSpotsElement.style.opacity = '1';
     }, 100);
 }
 
