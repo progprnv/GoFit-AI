@@ -192,10 +192,10 @@ async function callGrokAPI(query) {
 function displayFitnessSpots(text) {
     console.log('Raw fitness response:', text); // Debug: Keep for troubleshooting
 
-    // Normalize text by removing excessive whitespace and emojis for simpler parsing
+    // Normalize text by removing excessive whitespace
     const normalizedText = text.replace(/\s*\n\s*/g, '\n').trim();
 
-    // Attempt to split into turfs and gyms sections with flexible header matching
+    // Flexible header detection
     const turfHeaderPatterns = [
         /top 5 turfs/i,
         /turfs in/i,
@@ -212,7 +212,7 @@ function displayFitnessSpots(text) {
     let turfsSection = '';
     let gymsSection = '';
 
-    // Find the split point
+    // Find section boundaries
     const lines = normalizedText.split('\n');
     let turfStart = -1;
     let gymStart = -1;
@@ -235,12 +235,14 @@ function displayFitnessSpots(text) {
         turfsSection = lines.slice(turfStart).join('\n').trim();
     } else if (gymStart !== -1) {
         gymsSection = lines.slice(gymStart).join('\n').trim();
-    } else {
-        // Fallback: Assume a single list and split it
-        const numberedItems = lines.filter(line => /^\*\s+/.test(line));
-        if (numberedItems.length >= 5) {
-            turfsSection = numberedItems.slice(0, 5).join('\n');
-            gymsSection = numberedItems.slice(5, 10).join('\n');
+    }
+
+    // Fallback: If no clear split, look for bullet points and divide
+    if (!turfsSection && !gymsSection) {
+        const bulletItems = lines.filter(line => /^\*\s+/.test(line));
+        if (bulletItems.length >= 5) {
+            turfsSection = bulletItems.slice(0, 5).join('\n');
+            gymsSection = bulletItems.slice(5, 10).join('\n');
         }
     }
 
@@ -248,7 +250,8 @@ function displayFitnessSpots(text) {
     const formatEntries = (sectionText) => {
         if (!sectionText) return 'No entries found.';
         
-        const entryRegex = /\*\s+(.+?)(\n|$)([\s\S]*?)(?=\*\s+|$)/g;
+        // Match entries starting with "*   " followed by optional emoji and name
+        const entryRegex = /\*\s+[⚽🥅💪🏋️‍♀️]?\s*(.+?)(\n|$)([\s\S]*?)(?=\*\s+[⚽🥅💪🏋️‍♀️]?|$)/g;
         const entries = [];
         let match;
         while ((match = entryRegex.exec(sectionText)) !== null) {
@@ -256,14 +259,14 @@ function displayFitnessSpots(text) {
         }
 
         return entries.map(entry => {
-            const name = entry[1].trim().replace(/[⚽💪]\s*/, ''); // Remove emojis from name
+            const name = entry[1].trim();
             const details = entry[3];
-            const addressMatch = details.match(/Address:?\s*(.+)/i);
+            const addressMatch = details.match(/(Address|Location):?\s*(.+)/i);
             const mapsMatch = details.match(/(Google Maps|Maps Link):?\s*\[(.*?)\]/i);
             const contactMatch = details.match(/Contact( Number)?:?\s*(.+)/i);
             const ratingMatch = details.match(/Rating:?\s*(.+)/i);
 
-            const address = addressMatch ? addressMatch[1].trim() : 'Not provided';
+            const address = addressMatch ? addressMatch[2].trim() : 'Not provided';
             const mapsLink = mapsMatch ? mapsMatch[2].trim() : '#';
             const contact = contactMatch ? contactMatch[2].trim() : 'Not provided';
             const rating = ratingMatch ? ratingMatch[1].trim() : 'Not provided';
