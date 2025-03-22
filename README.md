@@ -40,11 +40,6 @@
 
 
 
-# GoFit AI  
-*Empower your fitness journey with AI-driven insights, location-based recommendations, and personalized wellness tips.*  
-
----
-
 ## 🚀 Overview  
 **GoFit AI** is an innovative open-source project that combines artificial intelligence, location-based services, and weather data to provide users with a holistic fitness and wellness experience. Whether you're looking for nearby gyms, weather-aware fitness tips, or personalized food recommendations, GoFit AI has you covered!  
 
