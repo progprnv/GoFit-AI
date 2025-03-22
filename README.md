@@ -84,7 +84,7 @@ The project is divided into **3 exciting phases** that seamlessly integrate to f
   - [Gemini API](https://developers.google.com/gemini) (for location-based suggestions and food recommendations)  
   - [OpenWeatherMap API](https://openweathermap.org/api) (for real-time weather data)  
 - **Languages**: JavaScript (for API calls and logic)  
-- **Hosting**: GitHub Pages (optional for demo)  
+- **Hosting**: Vercel  
 
 ---
 
