@@ -20,8 +20,7 @@
   </b>
   <p>
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github)](CODE_OF_CONDUCT.md) [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/progprnv/gofit-ai/actions)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github)](CODE_OF_CONDUCT.md) [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/progprnv/gofit-ai/actions)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
 [![Issues](https://img.shields.io/github/issues/progprnv/gofit-ai)](https://github.com/progprnv/gofit-ai/issues)  
 [![Stars](https://img.shields.io/github/stars/progprnv/gofit-ai)](https://github.com/progprnv/gofit-ai/stargazers)
 
