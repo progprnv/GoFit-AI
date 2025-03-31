@@ -96,7 +96,7 @@ The project is divided into **3 exciting phases** that seamlessly integrate to f
 #### Gemini API Example  
 ~~~javascript
 const apiKey = "YOUR_API_KEY"; // Replace with your key
-const model = "gemini-1.5-flash";
+const model = "gemini-2.0-flash";
 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
 const requestBody = {
