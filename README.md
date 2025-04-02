@@ -38,10 +38,13 @@
 </div>
 
 
-<a href="https://www.producthunt.com/posts/gofit-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-gofit&#0045;ai" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=944906&theme=light&t=1743624248506" alt="GoFit&#0045;AI - Open&#0032;Sourced&#0032;AI&#0032;Fitness&#0032;Care&#0032;Platform | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 
 ## 🚀 Overview  
 **GoFit AI** is an innovative open-source project that combines artificial intelligence, location-based services, and weather data to provide users with a holistic fitness and wellness experience. Whether you're looking for nearby gyms, weather-aware fitness tips, or personalized food recommendations, GoFit AI has you covered!  
+
+<a href="https://www.producthunt.com/posts/gofit-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-gofit&#0045;ai" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=944906&theme=light&t=1743624248506" alt="GoFit&#0045;AI - Open&#0032;Sourced&#0032;AI&#0032;Fitness&#0032;Care&#0032;Platform | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 
 The project is divided into **3 exciting phases** that seamlessly integrate to form the complete experience.
 
