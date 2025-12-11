@@ -51,16 +51,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 behavior: 'smooth',
                 block: 'start'
             });
-            // Close mobile menu if open
+            // Close mobile menu
             if (window.innerWidth <= 768) {
                 navLinks.style.display = 'none';
             }
         }
     });
 });
-
+ 
 // Replace these with your actual API keys (use a backend in production for security)
-const GEMINI_API_KEY = 'AIzaSyDpujbyrAZ1I_hniPtJNZwnMClGSjfLj-A';
+const GEMINI_API_KEY = 'AIzarAJnCsKssZ1I_hwnlkMClGSjfLj-A';
 const WEATHER_API_KEY = 'ef044fe4724ec6a5f73404f603dcdd93';
 const GROK_API_KEY = 'API KEY';
 
